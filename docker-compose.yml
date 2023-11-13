@@ -46,13 +46,17 @@ services:
      hostname: mosquitto
      container_name: fiware-mosquitto
      expose:
-       - "1883"
+       - "8883"
        - "9001"
      ports:
-       - "1883:1883"
+       - "8883:8883"
        - "9001:9001"
      volumes:
        - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+       - ./mosquitto/passwordfile:/mosquitto/passwordfile
+       - ./mosquitto/keys/ca.crt:/mosquitto/ca_certificates/ca.crt
+       - ./mosquitto/keys/server.crt:/mosquitto/certs/server.crt
+       - ./mosquitto/keys/server.key:/mosquitto/certs/server.key
 
 # MQTT Broker to NGSI
    iot-agent:
@@ -83,8 +87,19 @@ services:
        - IOTA_DEFAULT_RESOURCE=
        - IOTA_DEFAULT_KEY=fatecmeshiot
        - IOTA_MQTT_HOST=mosquitto
-       - IOTA_MQTT_PORT=1883
-       
+       - IOTA_MQTT_PORT=8883
+       - IOTA_MQTT_PROTOCOL=mqtts
+       - IOTA_MQTT_USERNAME=iot_agent
+       - IOTA_MQTT_PASSWORD=fatecmesh@
+       - IOTA_MQTT_CA=/opt/iotaul/keys/ca.crt
+       - IOTA_MQTT_CERT=/opt/iotaul/keys/server.crt
+       - IOTA_MQTT_REJECT_UNAUTHORIZED=false
+
+     volumes:
+       - ./mosquitto/keys/ca.crt:/opt/iotaul/keys/ca.crt
+       - ./mosquitto/keys/server.crt:/opt/iotaul/keys/server.crt
+
+
 volumes:
    db-data:
   

@@ -94,10 +94,12 @@ services:
        - IOTA_MQTT_CA=/opt/iotaul/keys/ca.crt
        - IOTA_MQTT_CERT=/opt/iotaul/keys/server.crt
        - IOTA_MQTT_REJECT_UNAUTHORIZED=false
+       - IOTA_MQTT_KEY=/opt/iotaul/keys/client.key
 
      volumes:
        - ./mosquitto/keys/ca.crt:/opt/iotaul/keys/ca.crt
        - ./mosquitto/keys/server.crt:/opt/iotaul/keys/server.crt
+       - ./mosquitto/keys/client.key:/opt/iotaul/keys/client.key
 
 
 volumes:
